@@ -28,7 +28,8 @@ function updateBarChart(sampleId) {
         var barArray = [barData];
 
         var barLayout = {
-            title: "Top 10 OTUs Found"
+            title: "Top 10 OTUs Found",
+            margin: {t: 30, l: 150}
             //may need to add margins
         };
 
@@ -66,18 +67,16 @@ function updateDemoInfo(sampleId) {
 
         demoInfo.html("");
 
-        demoInfo.append("ul")
-            .attr("id", "demo-info-list")
-            .attr("style", "list-style-type:none;"); //might need to do this in css
+        var list = demoInfo.append("ul")
+            .attr("class", "list-group")
+            .attr("style", "list-style-type:none;");
 
         Object.entries(result).forEach(([key, value]) => {
             //console.log(`${key}: ${value}`);
-            demoInfo.append("li").text(`${key}: ${value}`);
-        });
-
+            list.append("li")
+                .text(`${key}: ${value}`);
+        });        
         
-        
-        //console.log(ethnicity);
     });
 };
 

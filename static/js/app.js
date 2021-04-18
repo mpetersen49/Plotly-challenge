@@ -3,7 +3,6 @@ console.log("app.js loaded");
 
 // function to update bar chart
 function updateBarChart(sampleId) {
-    
     d3.json("static/data/samples.json").then(data => {
         //console.log(data);
 
@@ -29,7 +28,8 @@ function updateBarChart(sampleId) {
         var barArray = [barData];
 
         var barLayout = {
-            title: "xxx"
+            title: "Top 10 OTUs Found"
+            //may need to add margins
         };
 
         Plotly.newPlot("bar", barArray, barLayout);
@@ -46,7 +46,39 @@ function updateBubbleChart(sampleId) {
 
 // function to update demo info
 function updateDemoInfo(sampleId) {
-    console.log(`updateDemoInfo(${sampleId})`);
+    d3.json("static/data/samples.json").then(data => {
+        //console.log(data);
+        
+        var metadata = data.metadata;
+        var resultArray = metadata.filter(d => d.id == sampleId);
+        var result = resultArray[0];
+        //console.log(result);
+        
+        // var id = result.id;
+        // var ethnicity = result.ethnicity;
+        // var gender = result.gender;
+        // var age = result.age;
+        // var location = result.location;
+        // var bbtype = result.bbtype;
+        // var wfreq = result.wfreq;
+
+        var demoInfo = d3.selectAll("#sample-metadata");
+
+        demoInfo.html("");
+
+        demoInfo.append("ul")
+            .attr("id", "demo-info-list")
+            .attr("style", "list-style-type:none;"); //might need to do this in css
+
+        Object.entries(result).forEach(([key, value]) => {
+            //console.log(`${key}: ${value}`);
+            demoInfo.append("li").text(`${key}: ${value}`);
+        });
+
+        
+        
+        //console.log(ethnicity);
+    });
 };
 
 function optionChanged(newId) {
@@ -58,7 +90,7 @@ function optionChanged(newId) {
 function init() {
     // connect to data
     d3.json("static/data/samples.json").then(data => {
-        console.log(data);
+        //console.log(data);
 
         data.names.forEach(sampleId => {
             d3.selectAll("#selDataset")

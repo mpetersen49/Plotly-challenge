@@ -30,7 +30,6 @@ function updateBarChart(sampleId) {
         var barLayout = {
             title: "Top 10 OTUs Found",
             margin: {t: 30, l: 150}
-            //may need to add margins
         };
 
         Plotly.newPlot("bar", barArray, barLayout);
@@ -42,7 +41,41 @@ function updateBarChart(sampleId) {
 
 // function to update bubble chart
 function updateBubbleChart(sampleId) {
-    console.log(`updateBubbleChart(${sampleId})`);
+    d3.json("static/data/samples.json").then(data => {
+        //console.log(data);
+
+        var samples = data.samples;
+        var resultArray = samples.filter(s => s.id == sampleId);
+        var result = resultArray[0];
+        console.log(result);
+
+        var otu_ids = result.otu_ids;
+        var otu_labels = result.otu_labels;
+        var sample_values = result.sample_values;
+
+        var bubbleData = {
+            x: otu_ids,
+            y: sample_values,
+            text: otu_labels,
+            mode: 'markers',
+            marker: {
+                size: sample_values,
+                color: otu_ids,
+                colorscale: 'Earth'
+            }
+        };
+
+        var bubbleArray = [bubbleData];
+
+        var bubbleLayout = {
+            title: 'Bubble Chart of OTUs Found',
+            showlegend: false,
+            height: 600,
+            width: 1300,
+        };
+
+        Plotly.newPlot('bubble', bubbleArray, bubbleLayout);
+    });
 };
 
 // function to update demo info
@@ -54,14 +87,6 @@ function updateDemoInfo(sampleId) {
         var resultArray = metadata.filter(d => d.id == sampleId);
         var result = resultArray[0];
         //console.log(result);
-        
-        // var id = result.id;
-        // var ethnicity = result.ethnicity;
-        // var gender = result.gender;
-        // var age = result.age;
-        // var location = result.location;
-        // var bbtype = result.bbtype;
-        // var wfreq = result.wfreq;
 
         var demoInfo = d3.selectAll("#sample-metadata");
 

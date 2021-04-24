@@ -47,7 +47,7 @@ function updateBubbleChart(sampleId) {
         var samples = data.samples;
         var resultArray = samples.filter(s => s.id == sampleId);
         var result = resultArray[0];
-        console.log(result);
+        //console.log(result);
 
         var otu_ids = result.otu_ids;
         var otu_labels = result.otu_labels;
@@ -105,10 +105,59 @@ function updateDemoInfo(sampleId) {
     });
 };
 
+function updateGauge(sampleId) {
+    console.log(`updateGauge(${sampleId})`);
+
+    d3.json("static/data/samples.json").then(data => {
+        //console.log(data);
+
+        var metadata = data.metadata;
+        var resultArray = metadata.filter(d => d.id == sampleId);
+        var result = resultArray[0];
+        //console.log(result);
+
+        var wfreq = result.wfreq;
+
+        console.log(wfreq);
+
+        var gaugeData = {
+                domain: { x: [0, 1], y: [0, 1] },
+                value: wfreq,
+                title: {
+                    text: "Belly Button Washing Frequency"
+                },
+                type: "indicator",
+                mode: "gauge+number",
+                gauge: {
+                    axis: {
+                        range: [null, 9]
+                    },
+                    steps: {
+                        range: [null, 9],
+                        color: 'Greens'
+                    }
+                }
+            };
+
+        var gaugeArray = [gaugeData];
+        
+        var gaugeLayout = { 
+            width: 600, 
+            height: 500, 
+            margin: { t: 0, b: 0 } 
+        };
+        
+        
+        Plotly.newPlot('gauge', gaugeArray, gaugeLayout);
+
+    });
+};
+
 function optionChanged(newId) {
     updateBarChart(newId);
     updateBubbleChart(newId);
     updateDemoInfo(newId);
+    updateGauge(newId);
 };
 
 function init() {
@@ -130,6 +179,8 @@ function init() {
         updateBubbleChart(id);
         
         updateDemoInfo(id);
+
+        updateGauge(id);
     });
 
 };

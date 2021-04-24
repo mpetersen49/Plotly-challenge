@@ -69,6 +69,7 @@ function updateBubbleChart(sampleId) {
 
         var bubbleLayout = {
             title: 'Bubble Chart of OTUs Found',
+            xaxis: {title: 'OTU ID'},
             showlegend: false,
             height: 600,
             width: 1300,

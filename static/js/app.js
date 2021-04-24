@@ -92,14 +92,11 @@ function updateDemoInfo(sampleId) {
 
         demoInfo.html("");
 
-        var list = demoInfo.append("ul")
-            .attr("class", "list-group")
-            .attr("style", "list-style-type:none;");
-
         Object.entries(result).forEach(([key, value]) => {
             //console.log(`${key}: ${value}`);
-            list.append("li")
+            demoInfo.append("h6")
                 .text(`${key}: ${value}`);
+
         });        
         
     });
